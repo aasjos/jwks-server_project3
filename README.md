@@ -1,82 +1,117 @@
- JWKS Server - Project 3
-This is a simple JWKS (JSON Web Key Set) server implemented using Flask.
-It includes user registration, authentication, encrypted private key storage, and JWT issuance.
+JWKS Server - Project 3
+This project implements a secure JSON Web Key Set (JWKS) server using Flask, SQLite, and cryptographic techniques. It provides functionalities for secure user registration, authentication, JWT token generation, and JWKS key serving.
 
-Features
-User registration with auto-generated secure passwords.
+- Features
+User Registration (/register):
 
-Passwords are securely hashed using Argon2.
+New users can register with a username and email.
 
-Private RSA keys are AES-encrypted and stored in SQLite database.
+A random password is securely generated (UUID) and hashed using Argon2 before storing in the database.
+Unique usernames are enforced.
 
-JWT tokens are generated using decrypted private keys.
+Authentication (/auth):
 
-Auth requests are logged with IP addresses.
+Users can authenticate with their username and password.
 
-Rate-limiting applied to the /auth endpoint (optional).
+Password verification is handled using Argon2.
 
-Setup Instructions
-Install Requirements
+On successful login, a JWT token is issued, signed with an encrypted private key.
 
-bash
+Login attempts are logged (IP address, timestamp) in an auth_logs table.
+
+JWKS Endpoint (/.well-known/jwks.json):
+
+Publishes the public keys in JWKS format.
+
+Only decrypted public portions of keys are shared, following security best practices.
+
+Private Key Encryption:
+
+Private keys are encrypted using AES (CBC mode) before storing in the database.
+
+A secure environment variable NOT_MY_KEY is used for encryption and decryption.
+
+Security Enhancements:
+
+Rate limiting on /auth endpoint (10 requests per second).
+
+Secure password hashing (Argon2).
+
+Secure key encryption (AES).
+
+Random password generation during registration.
+
+IP Logging during authentication.
+
+- Technologies Used
+Python 3.13
+
+Flask
+
+Flask-Limiter
+
+PyCryptodome (for AES encryption)
+
+Passlib (for Argon2 hashing)
+
+SQLite (database)
+
+JWT (PyJWT) (for token signing and verification)
+
+-Database Schema
+users table:
+
+id, username, password_hash, email, date_registered, last_login
+
+auth_logs table:
+
+id, request_ip, user_id, timestamp
+
+keys table:
+
+kid, key, exp
+
+- Setup Instructions
+Clone the Repository:
+
  
+git clone https://github.com/aasjos/jwks-server_project3.git
+cd jwks-server_project3
+Install Requirements:
+
  
 pip install -r requirements.txt
-Set environment variable
+Set Environment Variable:
 
-bash
+ 
+export NOT_MY_KEY="your_super_secret_key_32bytes!"
+Initialize Database and Keys:
+
  
  
-export NOT_MY_KEY="this_is_a_very_secure_key123!"
-Run the Server
+python3 scripts/init_db.py
+python3 scripts/generate_key.py
+Run the Flask Server:
 
-bash
+ 
  
 bash run.sh
-The server will be running at:
+Test Endpoints using curl or Postman:
 
-cpp
+/register
+
+/auth
+
+/.well-known/jwks.json
+
+Notes
+Ensure your NOT_MY_KEY is exactly 16, 24, or 32 bytes for AES encryption.
+
+This project is for educational purposes and should not be used in production without additional security hardening.
+
+Always run Flask in production behind a WSGI server like Gunicorn.
+
+
  
-http://127.0.0.1:5000
-Endpoints
-POST /register
-
-Registers a new user.
-
-Body:
-
-json
-Copy
-Edit
-{
-    "username": "your_username",
-    "email": "your_email@example.com"
-}
-Response: Returns an auto-generated password.
-
-POST /auth
-
-Authenticates the user and returns a JWT token.
-
-Body:
-
-json
-Copy
-Edit
-{
-    "username": "your_username",
-    "password": "your_generated_password"
-}
-GET /.well-known/jwks.json
-
-Returns public keys for JWT verification.
-
-Database Tables
-users - Stores user credentials (username, hashed password, email, etc.)
-
-auth_logs - Logs authentication attempts.
-
-keys - Stores encrypted private RSA keys with expiry timestamps.
-
  
  

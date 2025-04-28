@@ -1,3 +1,8 @@
+<img width="651" alt="Screenshot 2025-04-27 at 11 16 05 PM" src="https://github.com/user-attachments/assets/8aeb844e-290a-4f8b-980c-9ac484158950" />
+<img width="854" alt="Screenshot 2025-04-27 at 10 40 28 PM" src="https://github.com/user-attachments/assets/90b05210-7974-466c-9285-dbb3e695bc85" />
+<img width="974" alt="Screenshot 2025-04-27 at 10 28 34 PM" src="https://github.com/user-attachments/assets/b6160a1b-c628-4bb5-aa31-72e2904ee7a9" />
+<img width="932" alt="Screenshot 2025-04-27 at 10 16 43 PM" src="https://github.com/user-attachments/assets/23263ad6-5b95-4f1e-886e-21168a0b2587" />
+<img width="1082" alt="Screenshot 2025-04-27 at 9 10 26 PM" src="https://github.com/user-attachments/assets/c3966c8f-fd0b-4427-b2a6-35a4bad68046" />
 JWKS Server - Project 3
 This project implements a secure JSON Web Key Set (JWKS) server using Flask, SQLite, and cryptographic techniques. It provides functionalities for secure user registration, authentication, JWT token generation, and JWKS key serving.
 
